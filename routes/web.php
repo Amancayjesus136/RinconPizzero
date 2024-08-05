@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Settings\NationalityManagement\NationalityController;
+use App\Http\Controllers\Settings\PositionManagement\PositionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,6 +38,7 @@ Route::middleware('auth')->group(function () {
 */
 
 Route::resource('nationality', NationalityController::class);
+Route::resource('positions', PositionController::class);
 
 
 

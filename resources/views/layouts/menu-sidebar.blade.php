@@ -429,7 +429,7 @@
                                         <a href="{{ route('nationality.index') }}" class="nav-link"> Nacionalidad </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link"> Puestos </a>
+                                        <a href="{{ route('positions.index') }}" class="nav-link"> Puestos </a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="#" class="nav-link"> Tipo de usuarios </a>
