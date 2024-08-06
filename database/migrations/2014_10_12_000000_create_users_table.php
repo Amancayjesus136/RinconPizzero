@@ -32,9 +32,9 @@ return new class extends Migration
             $table->string('home_phone')->nullable();
             $table->string('nationality')->nullable();
             $table->string('position')->nullable();
-            $table->string('user_type');
-            $table->string('user_code');
-            $table->integer('user_status');
+            $table->string('user_type')->nullable();
+            $table->string('user_code')->nullable();
+            $table->integer('user_status')->nullable();
             $table->timestamps();
         });
     }

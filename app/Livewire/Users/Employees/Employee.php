@@ -6,75 +6,80 @@ use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Settings\Positions;
-use Livewire\WithFileUploads;
 use App\Models\Settings\UserType;
 use App\Models\Users\Role;
+use Illuminate\Support\Facades\Hash;
 
 class Employee extends Component
 {
-    public User $employee;
+    public $name, $email, $password, $password_confirmation, $employee_id;
     public $accion = 'Crear';
-    public $password_confirmation;
     use WithPagination;
-
-    protected $rules =
-    [
-        'employee.name' => 'required',
-        'employee.email' => 'email',
-        'employee.password' => 'required',
-        'employee.first_name' => '',
-        'employee.last_name_father' => '',
-        'employee.last_name_mother' => '',
-        'employee.user_image' => '',
-        'employee.gender' => 'required',
-        'employee.birth_date' => '',
-        'employee.marital_status' => '',
-        'employee.primary_email' => '',
-        'employee.secondary_email' => '',
-        'employee.primary_phone' => '',
-        'employee.secondary_phone' => '',
-        'employee.home_phone' => '',
-        'employee.nationality' => 'required',
-        'employee.position' => 'required',
-        'employee.user_type' => 'required',
-        'employee.user_code' => 'required',
-        'employee.user_status' => 'required',
-    ];
 
     public function mount()
     {
-        $this->employee = new User();
+        $this->resetProperties();
     }
 
     public function modal($employee_id = null)
     {
         if ($employee_id != null) {
+
             $this->accion = 'Modificar';
-            $this->employee = User::find($employee_id);
-        }
-        else {
+            $employee = User::find($employee_id);
+            if ($employee) {
+                $this->name = $employee->name;
+                $this->email = $employee->email;
+                $this->password = '';
+                $this->password_confirmation = '';
+                $this->employee_id = $employee_id;
+            }
+        } else {
             $this->accion = 'Crear';
-            $this->employee = new User();
+            $this->resetProperties();
         }
     }
 
     public function save()
     {
-        $this->validate($this->rules);
+        $this->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+            'password_confirmation' => 'required',
+        ]);
 
-        if ($this->employee->password) {
-            if ($this->employee->password === $this->password_confirmation) {
-                $this->employee->password = bcrypt($this->employee->password);
-            } else {
-                session()->flash('error', 'Las contraseñas no coinciden');
-                return;
+        if ($this->employee_id) {
+            $user = User::find($this->employee_id);
+            if ($user) {
+                $user->update([
+                    'name' => $this->name,
+                    'email' => $this->email,
+                    'password' => Hash::make($this->password),
+                ]);
             }
+        } else {
+            User::create([
+                'name' => $this->name,
+                'email' => $this->email,
+                'password' => Hash::make($this->password),
+            ]);
         }
 
-        $this->employee->save();
-        $this->reset(['employee', 'password_confirmation']);
         session()->flash('message', 'Empleado guardado con éxito');
+        $this->resetProperties();
+        $this->dispatchBrowserEvent('notificar_accion');
     }
+
+    private function resetProperties()
+    {
+        $this->name = '';
+        $this->email = '';
+        $this->password = '';
+        $this->password_confirmation = '';
+        $this->employee_id = null;
+    }
+
     public function render()
     {
         $positions = Positions::whereIn('name_position', ['Dueño', 'Socio', 'Empleado'])->get();
@@ -88,5 +93,4 @@ class Employee extends Component
             'roles' => $roles,
         ]);
     }
-
 }

@@ -118,39 +118,38 @@
                         </div>
                     </div>
 
-                    <div wire:ingore.self class="modal fade" id="createEmployee" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div wire:ignore.self class="modal fade" id="createEmployee" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-lg">
                             <div class="modal-content border-0">
                                 <div class="modal-header bg-soft-info p-3">
                                     <h5 class="modal-title" id="exampleModalLabel">{{ $accion }} cuenta</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
                                 </div>
-                                <form class="tablelist-form" autocomplete="off">
+                                <form class="tablelist-form" wire:submit.prevent="save">
                                     <div class="modal-body">
                                         <input type="hidden" id="id-field">
                                         <div class="row g-3">
                                             <div class="col-lg-5 mt-4">
                                                 <div class="input-group">
                                                     <div class="input-group-text"><i class="ri-user-fill"></i></div>
-                                                    <input type="text" class="form-control" wire:model="employee.name" placeholder="Ingresar apodo">
+                                                    <input type="text" class="form-control" wire:model="name" placeholder="Ingresar apodo" required>
                                                 </div>
                                             </div>
                                             <div class="col-lg-7 mt-4">
                                                 <div class="input-group">
                                                     <div class="input-group-text"><i class="ri-mail-fill"></i></div>
-                                                    <input type="text" class="form-control" wire:model="employee.email" placeholder="Ingresar correo electrónico">
+                                                    <input type="email" class="form-control" wire:model="email" placeholder="Ingresar correo electrónico" required>
                                                 </div>
                                             </div>
-
                                             <div class="col-lg-8 mt-4">
                                                 <div class="input-group">
                                                     <div class="input-group-text"><i class="ri-lock-fill"></i></div>
-                                                    <input type="text" class="form-control" wire:model="employee.password" id="new_password" placeholder="Ingresar nueva contraseña">
+                                                    <input type="password" class="form-control" wire:model="password" placeholder="Ingresar nueva contraseña" required>
                                                 </div>
                                             </div>
                                             <div class="col-lg-4 mt-4">
                                                 <div class="input-group">
-                                                    <button class="btn btn-info" onclick="generatePassword()">
+                                                    <button type="button" class="btn btn-info">
                                                         <i class="ri-key-fill"></i> Generar contraseña
                                                     </button>
                                                 </div>
@@ -158,13 +157,13 @@
                                             <div class="col-lg-8 mt-4">
                                                 <div class="input-group">
                                                     <div class="input-group-text"><i class="ri-lock-fill"></i></div>
-                                                    <input type="text" class="form-control" wire:model="password_confirmation" id="confirm_password" placeholder="Confirmar nueva contraseña">
+                                                    <input type="password" class="form-control" wire:model="password_confirmation" placeholder="Confirmar nueva contraseña" required>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6 mt-4">
+                                            {{-- <div class="col-lg-6 mt-4">
                                                 <div class="input-group mb-2">
                                                     <div class="input-group-text"><i class="ri-men-fill"></i></div>
-                                                    <select class="form-select" wire:model="employee.gender">
+                                                    <select class="form-select" wire:model="gender">
                                                         <option value="" disabled selected>Seleccionar género</option>
                                                         <option value="Hombre">Hombre</option>
                                                         <option value="Mujer">Mujer</option>
@@ -175,7 +174,7 @@
                                             <div class="col-lg-6 mt-4">
                                                 <div class="input-group mb-2">
                                                     <div class="input-group-text"><i class="ri-briefcase-fill"></i></div>
-                                                    <select class="form-select" wire:model="employee.position">
+                                                    <select class="form-select" wire:model="position">
                                                         <option value="" disabled selected>Seleccionar puesto</option>
                                                         @foreach ($positions as $position)
                                                             <option value="{{ $position->name_position }}">{{ $position->name_position }}</option>
@@ -186,14 +185,14 @@
                                             <div class="col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-text"><i class="ri-user-settings-fill"></i></div>
-                                                    <select class="form-select" wire:model="employee.user_type">
+                                                    <select class="form-select" wire:model="user_type">
                                                         <option value="">Seleccionar tipo de usuario</option>
                                                         @foreach ($users_type as $user_type)
                                                             <option value="{{ $user_type->name_user_type }}">{{ $user_type->name_user_type }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                             {{-- <div class="col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-text"><i class="ri-shield-user-fill"></i></div>
@@ -210,7 +209,7 @@
                                     <div class="modal-footer">
                                         <div class="hstack gap-2 justify-content-end">
                                             <button type="button" class="btn btn-light" data-bs-dismiss="modal"><i class="ri-close-fill"></i> Cerrar</button>
-                                            <button type="button" class="btn btn-primary" wire:click="save()" id="add-btn">
+                                            <button type="submit" class="btn btn-primary" wire:click='save()'>
                                                 <i class="ri-user-add-fill"></i> {{ $accion }} empleado
                                             </button>
                                         </div>
@@ -219,6 +218,7 @@
                             </div>
                         </div>
                     </div>
+
                     <!--end add modal-->
 
                     <div class="modal fade zoomIn" id="deleteRecordModal" tabindex="-1" aria-labelledby="deleteRecordLabel" aria-hidden="true">
@@ -332,19 +332,18 @@
     </div>
 
     <script>
-        function generateSecurePassword(length = 12) {
-            const characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@#$';
-            let password = '';
-            for (let i = 0; i < length; i++) {
-                password += characters[Math.floor(Math.random() * characters.length)];
-            }
-            return password;
-        }
-
-        function generatePassword() {
-            const password = generateSecurePassword();
-            document.getElementById('new_password').value = password;
-            document.getElementById('confirm_password').value = password;
-        }
+        document.addEventListener('DOMContentLoaded', function () {
+            window.addEventListener('notificar_accion', function () {
+                var myModalEl = document.getElementById('createEmployee');
+                var modal = bootstrap.Modal.getInstance(myModalEl);
+                if (modal) {
+                    modal.hide();
+                } else {
+                    console.error('Bootstrap modal instance not found.');
+                }
+            });
+        });
     </script>
+
+
 </div>
