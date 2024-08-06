@@ -29,6 +29,13 @@
 
 
         @livewireScripts
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+        <script>
+            livewire.on('notificar_accion', accion => {
+                document.getElementById('close-modal').click();
+            });
+        </script>
+
         <script src="{{ asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
         <script src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}"></script>
         <script src="{{ asset('assets/libs/node-waves/waves.min.js') }}"></script>

@@ -16,15 +16,9 @@ class Employee extends Component
     public $accion = 'Crear';
     use WithPagination;
 
-    public function mount()
-    {
-        $this->resetProperties();
-    }
-
     public function modal($employee_id = null)
     {
         if ($employee_id != null) {
-
             $this->accion = 'Modificar';
             $employee = User::find($employee_id);
             if ($employee) {
@@ -46,7 +40,7 @@ class Employee extends Component
             'name' => 'required',
             'email' => 'required',
             'password' => 'required',
-            'password_confirmation' => 'required',
+            'password_confirmation' => 'required|same:password',
         ]);
 
         if ($this->employee_id) {
@@ -68,7 +62,7 @@ class Employee extends Component
 
         session()->flash('message', 'Empleado guardado con éxito');
         $this->resetProperties();
-        $this->dispatchBrowserEvent('notificar_accion');
+        $this->dispatch('notificar_accion',$this->accion);
     }
 
     private function resetProperties()

@@ -5,8 +5,11 @@
                 <div class="card-header">
                     <div class="d-flex align-items-center flex-wrap gap-2">
                         <div class="flex-grow-1">
-                            <button class="btn btn-info add-btn" data-bs-toggle="modal" data-bs-target="#createEmployee" wire:click='modal()'><i class="ri-add-fill me-1 align-bottom"></i> Add Company</button>
+                            <button class="btn btn-info add-btn" data-bs-toggle="modal" data-bs-target="#createEmployee" wire:click="modal()">
+                                <i class="ri-add-fill me-1 align-bottom"></i> {{ $accion }}
+                            </button>
                         </div>
+
                         <div class="flex-shrink-0">
                             <div class="hstack text-nowrap gap-2">
                                 <button class="btn btn-soft-danger" id="remove-actions" onclick="deleteMultiple()"><i class="ri-delete-bin-2-line"></i></button>
@@ -125,14 +128,14 @@
                                     <h5 class="modal-title" id="exampleModalLabel">{{ $accion }} cuenta</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
                                 </div>
-                                <form class="tablelist-form" wire:submit.prevent="save">
+                                <form class="tablelist-form">
                                     <div class="modal-body">
                                         <input type="hidden" id="id-field">
                                         <div class="row g-3">
                                             <div class="col-lg-5 mt-4">
                                                 <div class="input-group">
                                                     <div class="input-group-text"><i class="ri-user-fill"></i></div>
-                                                    <input type="text" class="form-control" wire:model="name" placeholder="Ingresar apodo" required>
+                                                    <input type="text" class="form-control" wire:model="name" placeholder="Ingresar nombre" required>
                                                 </div>
                                             </div>
                                             <div class="col-lg-7 mt-4">
@@ -160,56 +163,12 @@
                                                     <input type="password" class="form-control" wire:model="password_confirmation" placeholder="Confirmar nueva contraseña" required>
                                                 </div>
                                             </div>
-                                            {{-- <div class="col-lg-6 mt-4">
-                                                <div class="input-group mb-2">
-                                                    <div class="input-group-text"><i class="ri-men-fill"></i></div>
-                                                    <select class="form-select" wire:model="gender">
-                                                        <option value="" disabled selected>Seleccionar género</option>
-                                                        <option value="Hombre">Hombre</option>
-                                                        <option value="Mujer">Mujer</option>
-                                                        <option value="Prefiero no decirlo">Prefiero no decirlo</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 mt-4">
-                                                <div class="input-group mb-2">
-                                                    <div class="input-group-text"><i class="ri-briefcase-fill"></i></div>
-                                                    <select class="form-select" wire:model="position">
-                                                        <option value="" disabled selected>Seleccionar puesto</option>
-                                                        @foreach ($positions as $position)
-                                                            <option value="{{ $position->name_position }}">{{ $position->name_position }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-text"><i class="ri-user-settings-fill"></i></div>
-                                                    <select class="form-select" wire:model="user_type">
-                                                        <option value="">Seleccionar tipo de usuario</option>
-                                                        @foreach ($users_type as $user_type)
-                                                            <option value="{{ $user_type->name_user_type }}">{{ $user_type->name_user_type }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div> --}}
-                                            {{-- <div class="col-lg-6">
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-text"><i class="ri-shield-user-fill"></i></div>
-                                                    <select class="form-select" wire:model="role_id">
-                                                        <option value="" disabled selected>Seleccionar rol</option>
-                                                        @foreach ($roles as $role)
-                                                            <option value="{{ $role->id_role }}">{{ $role->role }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div> --}}
                                         </div>
                                     </div>
                                     <div class="modal-footer">
                                         <div class="hstack gap-2 justify-content-end">
                                             <button type="button" class="btn btn-light" data-bs-dismiss="modal"><i class="ri-close-fill"></i> Cerrar</button>
-                                            <button type="submit" class="btn btn-primary" wire:click='save()'>
+                                            <button type="submit" class="btn btn-primary" wire:click()="save">
                                                 <i class="ri-user-add-fill"></i> {{ $accion }} empleado
                                             </button>
                                         </div>
@@ -331,19 +290,6 @@
         <!--end col-->
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            window.addEventListener('notificar_accion', function () {
-                var myModalEl = document.getElementById('createEmployee');
-                var modal = bootstrap.Modal.getInstance(myModalEl);
-                if (modal) {
-                    modal.hide();
-                } else {
-                    console.error('Bootstrap modal instance not found.');
-                }
-            });
-        });
-    </script>
 
 
 </div>
