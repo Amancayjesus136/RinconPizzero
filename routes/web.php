@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Settings\NationalityManagement\NationalityController;
 use App\Http\Controllers\Settings\PositionManagement\PositionController;
+use App\Http\Controllers\Users\EmployeeManagement\EmployeesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,8 +38,10 @@ Route::middleware('auth')->group(function () {
 |
 */
 
-Route::resource('nationality', NationalityController::class);
-Route::resource('positions', PositionController::class);
+Route::get('/nationality', [NationalityController::class, 'index'])->name('nationality.index');
+Route::get('/positions', [PositionController::class, 'index'])->name('positions.index');
+Route::get('/users/employees', [EmployeesController::class, 'index'])->name('employees.index');
+
 
 
 

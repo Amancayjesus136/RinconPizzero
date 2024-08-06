@@ -411,6 +411,15 @@
                             </li>
                         </ul>
 
+                        <li class="menu-title"><span>Gestión usuarios</span></li>
+                        <li class="nav-item">
+                            <li class="nav-item">
+                                <a class="nav-link menu-link" href="{{ route('employees.index') }}" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                                    <i class="ri-survey-line"></i> <span data-key="t-dashboard">Empleados</span>
+                                </a>
+                            </li>
+                        </li>
+
                         <li class="menu-title"><span>Gestión general</span></li>
                         <li class="nav-item">
                             {{-- <li class="nav-item">
