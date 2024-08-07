@@ -53,68 +53,91 @@
                                                 <input class="form-check-input" type="checkbox" id="checkAll" value="option">
                                             </div>
                                         </th>
-                                        <th class="sort" data-sort="name" scope="col">Company Name</th>
-                                        <th class="sort" data-sort="owner" scope="col">Owner</th>
-                                        <th class="sort" data-sort="industry_type" scope="col">Industry Type</th>
-                                        <th class="sort" data-sort="star_value" scope="col">Rating</th>
-                                        <th class="sort" data-sort="location" scope="col">Location</th>
-                                        <th scope="col">Action</th>
+                                        <th class="sort" data-sort="name" scope="col">Name</th>
+                                        <th class="sort" data-sort="email" scope="col">Email</th>
+                                        <th class="sort" data-sort="fecha_creado" scope="col">Fecha creado</th>
+                                        <th class="sort" data-sort="genero" scope="col">Genero</th>
+                                        <th class="sort" data-sort="puesto" scope="col">Puesto</th>
+                                        <th class="sort" data-sort="tipo_usuario" scope="col">Tipo de usuario</th>
+                                        <th class="sort" data-sort="rol" scope="col">Rol</th>
+                                        <th scope="col">Acción</th>
                                     </tr>
                                 </thead>
-                                <tbody class="list form-check-all"><tr>
-                                        <th scope="row">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="chk_child" value="option1">
-                                            </div>
-                                        </th>
-                                        <td class="id" style="display:none;"><a href="#" class="fw-medium link-primary">#VZ10</a></td>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="flex-shrink-0">
-                                                    <img src="{{ asset('assets/images/brands/slack.png') }}" alt="" class="avatar-xxs rounded-circle image_src object-fit-cover">
+                                <tbody class="list form-check-all">
+                                    @if ($employees->isEmpty())
+                                        <tr>
+                                            <td colspan="12" class="text-center">
+                                                <div class="noresult" style="display: none">
+                                                    <div class="text-center">
+                                                        <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px"></lord-icon>
+                                                        <h5 class="mt-2">Sorry! No Result Found</h5>
+                                                        <p class="text-muted mb-0">We've searched more than 150+ companies We did not find any companies for you search.</p>
+                                                    </div>
                                                 </div>
-                                                <div class="flex-grow-1 ms-2 name">Syntyce Solutions</div>
-                                            </div>
-                                        </td>
-                                        <td class="owner">Herbert Stokes</td>
-                                        <td class="industry_type">Health Services</td>
-                                        <td><span class="star_value">2.9</span> <i class="ri-star-fill text-warning align-bottom"></i></td>
-                                        <td class="location">Berlin, Germany</td>
-                                        <td>
-                                            <ul class="list-inline hstack gap-2 mb-0">
-                                                <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Call">
-                                                    <a href="javascript:void(0);" class="text-muted d-inline-block">
-                                                        <i class="ri-phone-line fs-16"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Message">
-                                                    <a href="javascript:void(0);" class="text-muted d-inline-block">
-                                                        <i class="ri-question-answer-line fs-16"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="View">
-                                                    <a href="javascript:void(0);" class="view-item-btn"><i class="ri-eye-fill align-bottom text-muted"></i></a>
-                                                </li>
-                                                <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Edit">
-                                                    <a class="edit-item-btn" href="#showModal" data-bs-toggle="modal"><i class="ri-pencil-fill align-bottom text-muted"></i></a>
-                                                </li>
-                                                <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Delete">
-                                                    <a class="remove-item-btn" data-bs-toggle="modal" href="#deleteRecordModal">
-                                                        <i class="ri-delete-bin-fill align-bottom text-muted"></i>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                        </tr>
+                                    @else
+                                        @foreach ($employees as $employee)
+                                            <tr>
+                                                <th scope="row">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="chk_child" value="option1">
+                                                    </div>
+                                                </th>
+                                                <td class="id" style="display:none;">
+                                                    <a href="#" class="fw-medium link-primary">#VZ10</a>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="flex-shrink-0">
+                                                            <img src="{{ asset('assets/images/brands/slack.png') }}" alt="" class="avatar-xxs rounded-circle image_src object-fit-cover">
+                                                        </div>
+                                                        <div class="flex-grow-1 ms-2 name">{{ $employee->name }}</div>
+                                                    </div>
+                                                </td>
+                                                <td class="owner">{{ $employee->email }}</td>
+                                                <td>{{ $employee->created_at->format('Y-m-d') }}</td>
+                                                <td class="owner">{{ $employee->gender }}</td>
+                                                <td class="owner">{{ $employee->position }}</td>
+                                                <td class="owner">{{ $employee->user_type }}</td>
+                                                <td class="owner">
+                                                    @foreach ($employee->roles as $role)
+                                                        <span class="badge bg-success">{{ $role->role }}</span>
+                                                    @endforeach
+                                                </td>
+
+                                                {{-- <td><span class="star_value">2.9</span> <i class="ri-star-fill text-warning align-bottom"></i></td> --}}
+                                                <td>
+                                                    <ul class="list-inline hstack gap-2 mb-0">
+                                                        <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Call">
+                                                            <a href="javascript:void(0);" class="text-muted d-inline-block">
+                                                                <i class="ri-phone-line fs-16"></i>
+                                                            </a>
+                                                        </li>
+                                                        <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Message">
+                                                            <a href="javascript:void(0);" class="text-muted d-inline-block">
+                                                                <i class="ri-question-answer-line fs-16"></i>
+                                                            </a>
+                                                        </li>
+                                                        <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="View">
+                                                            <a href="javascript:void(0);" class="view-item-btn"><i class="ri-eye-fill align-bottom text-muted"></i></a>
+                                                        </li>
+                                                        <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Edit">
+                                                            <a class="edit-item-btn" href="#showModal" data-bs-toggle="modal"><i class="ri-pencil-fill align-bottom text-muted"></i></a>
+                                                        </li>
+                                                        <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Delete">
+                                                            <a class="remove-item-btn" data-bs-toggle="modal" href="#deleteRecordModal">
+                                                                <i class="ri-delete-bin-fill align-bottom text-muted"></i>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
                                 </tbody>
                             </table>
-                            <div class="noresult" style="display: none">
-                                <div class="text-center">
-                                    <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px"></lord-icon>
-                                    <h5 class="mt-2">Sorry! No Result Found</h5>
-                                    <p class="text-muted mb-0">We've searched more than 150+ companies We did not find any companies for you search.</p>
-                                </div>
-                            </div>
+
                         </div>
                         <div>
                             {{-- paginate --}}
@@ -161,6 +184,50 @@
                                                 <div class="input-group">
                                                     <div class="input-group-text"><i class="ri-lock-fill"></i></div>
                                                     <input type="password" class="form-control" wire:model="password_confirmation" placeholder="Confirmar nueva contraseña" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 mt-4">
+                                                <div class="input-group mb-2">
+                                                    <div class="input-group-text"><i class="ri-men-fill"></i></div>
+                                                    <select class="form-select" wire:model="gender">
+                                                        <option value="" disabled selected>Seleccionar género</option>
+                                                        <option value="Hombre">Hombre</option>
+                                                        <option value="Mujer">Mujer</option>
+                                                        <option value="Prefiero no decirlo">Prefiero no decirlo</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 mt-4">
+                                                <div class="input-group mb-2">
+                                                    <div class="input-group-text"><i class="ri-briefcase-fill"></i></div>
+                                                    <select class="form-select" wire:model="position">
+                                                        <option value="" disabled selected>Seleccionar puesto</option>
+                                                        @foreach ($positions as $position)
+                                                            <option value="{{ $position->name_position }}">{{ $position->name_position }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-text"><i class="ri-user-settings-fill"></i></div>
+                                                    <select class="form-select" wire:model="user_type">
+                                                        <option value="">Seleccionar tipo de usuario</option>
+                                                        @foreach ($users_type as $user_type)
+                                                            <option value="{{ $user_type->name_user_type }}">{{ $user_type->name_user_type }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-text"><i class="ri-shield-user-fill"></i></div>
+                                                    <select class="form-select" wire:model="idRole">
+                                                        <option value="" disabled selected>Seleccionar rol</option>
+                                                        @foreach ($roles as $role)
+                                                            <option value="{{ $role->id_role }}">{{ $role->role }}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
